@@ -6,6 +6,12 @@ from kubernetes.client import api_client, ApiException
 from kubernetes import client as k8s_client
 
 
+def struct_to_endpoint(endpoint):
+    endpoint_struct = endpoint[endpoint["name"]]
+    return "{}://{}:{}".format(endpoint_struct["scheme"], endpoint_struct["hostname"],
+                               endpoint_struct["port"])
+
+
 def wait_for_fybrikapplication_to_be_ready(custom_object_api):
     while True:
         try:
@@ -25,10 +31,13 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
             continue
 
         assetsReady = True
+        endpoints = {}
         for name, asset in fybrikapplication["status"]["assetStates"].items():
             for condition in asset["conditions"]:
                 if condition["type"] == "Ready":
-                    if condition["status"] != 'True':
+                    if condition["status"] == 'True':
+                        endpoints[name] = struct_to_endpoint(asset["endpoint"])
+                    else:
                         print("asset not ready")
                         assetsReady = False
                         break
@@ -37,8 +46,8 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
             time.sleep(1)
             continue
 
-        print(str(json.dumps(fybrikapplication)))
-        return
+        return endpoints
+
 
 def main():
     dynamic.DynamicClient(
@@ -47,7 +56,8 @@ def main():
 
     custom_object_api = k8s_client.CustomObjectsApi()
 
-    wait_for_fybrikapplication_to_be_ready(custom_object_api)
+    endpoints = wait_for_fybrikapplication_to_be_ready(custom_object_api)
+    print(str(endpoints))
 
 
 if __name__ == "__main__":

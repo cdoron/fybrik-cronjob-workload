@@ -1,0 +1,23 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fybrikapplications
+  namespace: fybrik-airbyte-sample
+rules:
+- apiGroups: ["app.fybrik.io"]
+  resources: ["fybrikapplications"]
+  verbs: ["create", "get"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fybrikapplications
+  namespace: fybrik-airbyte-sample
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: fybrik-airbyte-sample
+roleRef:
+  kind: Role
+  name: fybrikapplications
+  apiGroup: rbac.authorization.k8s.io

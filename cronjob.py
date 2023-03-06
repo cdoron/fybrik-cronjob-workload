@@ -4,7 +4,7 @@ import time
 from kubernetes import config, dynamic
 from kubernetes.client import api_client, ApiException
 from kubernetes import client as k8s_client
-
+from fybrikapplication import get_fybrikapplication_dict
 
 def struct_to_endpoint(endpoint):
     endpoint_struct = endpoint[endpoint["name"]]
@@ -25,12 +25,14 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
             time.sleep(1)
             continue
 
-        if not fybrikapplication["status"]["ready"]:
+        if "status" not in fybrikapplication or \
+            "ready" not in fybrikapplication["status"] or \
+            not fybrikapplication["status"]["ready"]:
             print("FybrikApplication not ready")
             time.sleep(1)
             continue
 
-        assetsReady = True
+        assets_ready = True
         endpoints = {}
         for name, asset in fybrikapplication["status"]["assetStates"].items():
             for condition in asset["conditions"]:
@@ -39,20 +41,30 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
                         endpoints[name] = struct_to_endpoint(asset["endpoint"])
                     else:
                         print("asset not ready")
-                        assetsReady = False
+                        assets_ready = False
                         break
 
-        if not assetsReady:
+        if not assets_ready:
             time.sleep(1)
             continue
 
         return endpoints
 
 
+def create_fybrik_application(client, fa_dict):
+    fybrikapplication_api = client.resources.get(
+        api_version="app.fybrik.io/v1beta1", kind="FybrikApplication"
+    )
+
+    fybrikapplication_api.create(fa_dict)
+
 def main():
-    dynamic.DynamicClient(
+    client = dynamic.DynamicClient(
         api_client.ApiClient(configuration=config.load_kube_config())
     )
+
+    fa_dict = get_fybrikapplication_dict()
+    create_fybrik_application(client, fa_dict)
 
     custom_object_api = k8s_client.CustomObjectsApi()
 

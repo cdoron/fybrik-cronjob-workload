@@ -17,7 +17,7 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
         try:
             fybrikapplication = custom_object_api.get_namespaced_custom_object(
                 group="app.fybrik.io", version="v1beta1",
-                namespace="fybrik-airbyte-sample", plural="fybrikapplications",
+                namespace="fybrik-workload", plural="fybrikapplications",
                 name="my-app"
             )
         except ApiException:

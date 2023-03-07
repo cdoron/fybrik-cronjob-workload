@@ -9,7 +9,7 @@ fybrik_application_str = '''
             "app": "my-app"
         },
         "name": "my-app",
-        "namespace": "fybrik-airbyte-sample"
+        "namespace": "fybrik-workload"
     },
     "spec": {
         "appInfo": {

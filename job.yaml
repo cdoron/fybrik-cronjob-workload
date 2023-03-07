@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fybrik-cronjob-job
+  namespace: fybrik-airbyte-sample
+spec:
+  template:
+    spec:
+      containers:
+      - name: fybrik-cronjob-job
+        image: ghcr.io/fybrik/fybrik-cronjob-workload:0.0.0
+      restartPolicy: Never

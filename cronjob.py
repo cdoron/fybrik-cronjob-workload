@@ -60,7 +60,8 @@ def create_fybrik_application(client, fa_dict):
 
 def main():
     client = dynamic.DynamicClient(
-        api_client.ApiClient(configuration=config.load_kube_config())
+        # api_client.ApiClient(configuration=config.load_kube_config())
+        api_client.ApiClient(configuration=config.load_incluster_config())
     )
 
     fa_dict = get_fybrikapplication_dict()

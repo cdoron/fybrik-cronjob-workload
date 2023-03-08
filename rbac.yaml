@@ -6,7 +6,7 @@ metadata:
 rules:
 - apiGroups: ["app.fybrik.io"]
   resources: ["fybrikapplications"]
-  verbs: ["create", "get"]
+  verbs: ["create", "get", "delete"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

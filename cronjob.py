@@ -52,14 +52,6 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
         return endpoints
 
 
-def create_fybrik_application(client, fa_dict):
-    fybrikapplication_api = client.resources.get(
-        api_version="app.fybrik.io/v1beta1", kind="FybrikApplication"
-    )
-
-    fybrikapplication_api.create(fa_dict)
-
-
 def main(args):
     client = dynamic.DynamicClient(
         # api_client.ApiClient(configuration=config.load_kube_config())
@@ -68,12 +60,18 @@ def main(args):
 
     read_asset_name = args[0]
     fa_dict = get_fybrikapplication_dict(read_asset_name)
-    create_fybrik_application(client, fa_dict)
+
+    fybrikapplication_api = client.resources.get(
+        api_version="app.fybrik.io/v1beta1", kind="FybrikApplication"
+    )
+    fybrikapplication_api.create(fa_dict)
 
     custom_object_api = k8s_client.CustomObjectsApi()
 
     endpoints = wait_for_fybrikapplication_to_be_ready(custom_object_api)
     print(str(endpoints))
+
+    fybrikapplication_api.delete(name="my-app", namespace="fybrik-workload")
 
 
 if __name__ == "__main__":

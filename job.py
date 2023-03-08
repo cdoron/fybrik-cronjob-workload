@@ -1,4 +1,3 @@
-import json
 import sys
 import time
 
@@ -6,6 +5,8 @@ from kubernetes import config, dynamic
 from kubernetes.client import api_client, ApiException
 from kubernetes import client as k8s_client
 from fybrikapplication import get_fybrikapplication_dict
+from workload import run_workload
+
 
 def struct_to_endpoint(endpoint):
     endpoint_struct = endpoint[endpoint["name"]]
@@ -27,8 +28,8 @@ def wait_for_fybrikapplication_to_be_ready(custom_object_api):
             continue
 
         if "status" not in fybrikapplication or \
-            "ready" not in fybrikapplication["status"] or \
-            not fybrikapplication["status"]["ready"]:
+                "ready" not in fybrikapplication["status"] or \
+                not fybrikapplication["status"]["ready"]:
             print("FybrikApplication not ready")
             time.sleep(1)
             continue
@@ -70,6 +71,8 @@ def main(args):
 
     endpoints = wait_for_fybrikapplication_to_be_ready(custom_object_api)
     print(str(endpoints))
+
+    run_workload(read_asset_name, endpoints)
 
     fybrikapplication_api.delete(name="my-app", namespace="fybrik-workload")
 

@@ -12,5 +12,5 @@ spec:
         imagePullPolicy: Always
         command: ["python3", "job.py"]
         args:
-        - openmetadata-https.default.openmetadata.userdata
+        - fybrik-airbyte-sample/userdata
       restartPolicy: Never

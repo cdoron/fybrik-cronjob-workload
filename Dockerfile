@@ -12,6 +12,7 @@ RUN python3 -m pip install pyarrow \
 
 ADD fybrikapplication.py /root
 ADD job.py /root
+ADD workload.py /root
 
 CMD ["python3", "job.py"]
 

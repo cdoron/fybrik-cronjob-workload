@@ -1,4 +1,5 @@
 import json
+import sys
 import time
 
 from kubernetes import config, dynamic
@@ -58,13 +59,15 @@ def create_fybrik_application(client, fa_dict):
 
     fybrikapplication_api.create(fa_dict)
 
-def main():
+
+def main(args):
     client = dynamic.DynamicClient(
         # api_client.ApiClient(configuration=config.load_kube_config())
         api_client.ApiClient(configuration=config.load_incluster_config())
     )
 
-    fa_dict = get_fybrikapplication_dict()
+    read_asset_name = args[0]
+    fa_dict = get_fybrikapplication_dict(read_asset_name)
     create_fybrik_application(client, fa_dict)
 
     custom_object_api = k8s_client.CustomObjectsApi()
@@ -74,4 +77,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

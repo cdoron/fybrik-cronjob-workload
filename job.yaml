@@ -10,4 +10,7 @@ spec:
       - name: fybrik-cronjob-job
         image: ghcr.io/fybrik/fybrik-cronjob-workload:0.0.0
         imagePullPolicy: Always
+        command: ["python3", "cronjob.py"]
+        args:
+        - openmetadata-https.default.openmetadata.userdata
       restartPolicy: Never

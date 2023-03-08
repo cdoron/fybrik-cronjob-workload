@@ -11,7 +11,7 @@ RUN python3 -m pip install pyarrow \
     && python3 -m pip install kubernetes
 
 ADD fybrikapplication.py /root
-ADD cronjob.py /root
+ADD job.py /root
 
-CMD ["python3", "cronjob.py"]
+CMD ["python3", "job.py"]
 

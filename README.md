@@ -1,3 +1,3 @@
-# fybrik-crobjob-workload
+# fybrik-workload-job
 
-Note: currently, the namespace for the cronjob workload is hard-coded to `fybrik-workload`
+Note: currently, the namespace for the workload job is hard-coded to `fybrik-workload`

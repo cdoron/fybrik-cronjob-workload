@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fybrik-cronjob-job
+  name: fybrik-job
   namespace: fybrik-workload
 spec:
   template:
     spec:
       containers:
-      - name: fybrik-cronjob-job
-        image: ghcr.io/fybrik/fybrik-cronjob-workload:0.0.0
+      - name: fybrik-job
+        image: ghcr.io/fybrik/fybrik-workload-job:0.0.0
         imagePullPolicy: Always
-        command: ["python3", "cronjob.py"]
+        command: ["python3", "job.py"]
         args:
         - openmetadata-https.default.openmetadata.userdata
       restartPolicy: Never

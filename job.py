@@ -60,7 +60,8 @@ def main(args):
     )
 
     read_asset_name = args[0]
-    fa_dict = get_fybrikapplication_dict(read_asset_name)
+    write_asset_name = args[1]
+    fa_dict = get_fybrikapplication_dict(read_asset_name, write_asset_name)
 
     fybrikapplication_api = client.resources.get(
         api_version="app.fybrik.io/v1beta1", kind="FybrikApplication"
@@ -72,7 +73,7 @@ def main(args):
     endpoints = wait_for_fybrikapplication_to_be_ready(custom_object_api)
     print(str(endpoints))
 
-    run_workload(read_asset_name, endpoints)
+    run_workload(read_asset_name, write_asset_name, endpoints)
 
     fybrikapplication_api.delete(name="my-app", namespace="fybrik-workload")
 

@@ -12,5 +12,6 @@ spec:
         imagePullPolicy: Always
         command: ["python3", "job.py"]
         args:
+        - fybrik-airbyte-sample/paysim-csv
         - fybrik-airbyte-sample/userdata
       restartPolicy: Never

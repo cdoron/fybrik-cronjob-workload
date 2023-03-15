@@ -24,6 +24,15 @@ fybrik_application_str = Template('''
                         "protocol": "fybrik-arrow-flight"
                     }
                 }
+            },
+            {
+                "dataSetID": "${write_asset_name}",
+                "flow": "write",
+                "requirements": {
+                    "interface": {
+                        "protocol": "fybrik-arrow-flight"
+                    }
+                }
             }
         ],
         "selector": {
@@ -37,5 +46,7 @@ fybrik_application_str = Template('''
 }
 ''')
 
-def get_fybrikapplication_dict(read_asset_name):
-    return json.loads(fybrik_application_str.substitute(read_asset_name=read_asset_name))
+
+def get_fybrikapplication_dict(read_asset_name, write_asset_name):
+    return json.loads(fybrik_application_str.substitute(read_asset_name=read_asset_name,
+                                                        write_asset_name=write_asset_name))

@@ -13,7 +13,7 @@ Note: currently, the namespace for the workload job is hard-coded to `fybrik-wor
    kubectl apply -f https://github.com/fybrik/arrow-flight-module/releases/download/v0.11.0/module.yaml -n fybrik-system   
    ```
 
-1. Follow the instructions in [Notebook sample for the read flow](https://fybrik.io/v1.3/samples/notebook-read/) to deploy an S3 service. Replace `fybrik-notebook-sample` with `fybrik-airbyte-sample`. XXX
+1. Follow the instructions in [Notebook sample for the read flow](https://fybrik.io/v1.3/samples/notebook-read/) to deploy an S3 service. Replace `fybrik-notebook-sample` with `fybrik-airbyte-sample`.
 
 1. run:
    ```bash
@@ -87,4 +87,10 @@ Note: currently, the namespace for the workload job is hard-coded to `fybrik-wor
    kubectl -n fybrik-system create configmap sample-policy --from-file=sample-policy.rego
    kubectl -n fybrik-system label configmap sample-policy openpolicyagent.org/policy=rego
    while [[ $(kubectl get cm sample-policy -n fybrik-system -o 'jsonpath={.metadata.annotations.openpolicyagent\.org/policy-status}') != '{"status":"ok"}' ]]; do echo "waiting for policy to be applied" && sleep 5; done
+   ```
+
+1. Create a namespace called `fybrik-workload`. Our workload creates and deletes FybrikApplications, so we need to grant workloads running in `fybrik-workload` proper permission:
+   ```bash
+   kubectl create ns fybrik-workload
+   kubectl apply -f rbac.yaml
    ```

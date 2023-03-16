@@ -76,7 +76,7 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 
 1. Before creating the governance policy, make sure that there is no other policy with the same name:
    ```bash
-   kubectl delete cm policy sample-policy -n fybrik-system
+   kubectl delete cm sample-policy -n fybrik-system --ignore-not-found=true
    ```
 
 1. Create a file named `sample-policy.rego` with the following contents:

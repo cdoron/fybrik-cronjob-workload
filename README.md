@@ -84,9 +84,7 @@ Note: currently, the namespace for the workload job is hard-coded to `fybrik-wor
 
 1. Run:
    ```bash
-kubectl -n fybrik-system create configmap sample-policy --from-file=sample-policy.rego
-kubectl -n fybrik-system label configmap sample-policy openpolicyagent.org/policy=rego
-while [[ $(kubectl get cm sample-policy -n fybrik-system -o 'jsonpath={.metadata.annotations.openpolicyagent\.org/policy-status}') != '{"status":"ok"}' ]]; do echo "waiting for policy to be applied" && sleep 5; done
+   kubectl -n fybrik-system create configmap sample-policy --from-file=sample-policy.rego
+   kubectl -n fybrik-system label configmap sample-policy openpolicyagent.org/policy=rego
+   while [[ $(kubectl get cm sample-policy -n fybrik-system -o 'jsonpath={.metadata.annotations.openpolicyagent\.org/policy-status}') != '{"status":"ok"}' ]]; do echo "waiting for policy to be applied" && sleep 5; done
    ```
-
-

@@ -104,3 +104,8 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
    kubectl create ns fybrik-workload
    kubectl apply -f $FYBRIK_WORKLOAD/rbac.yaml
    ```
+
+1. At this point, everything should be in place. We have the assets, `FyrbikModule`-s, governance policy. We are ready to run a workload job. This job creates a `FybrikApplication`, waits for that `FybrikApplication` to be ready, run the workload that reads from one asset and writes to another, and finally deletes the `FybrikApplication`:
+   ```bash
+   kubectl apply -f $FYBRIK_WORKLOAD/job.yaml
+   ```

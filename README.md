@@ -1,6 +1,15 @@
 # fybrik-workload-job
 
-Note: currently, the namespace for the workload job is hard-coded to `fybrik-workload`
+Before we begin, let us set environment variables representing copies of the different repositories that we need. For example:
+```bash
+git clone https://github.com/cdoron/fybrik-workload-job /tmp/fybrik-workload-job
+git clone https://github.com/fybrik/fybrik /tmp/fybrik
+git clone https://github.com/fybrik/airbyte-module /tmp/airbyte-module
+
+export FYBRIK_WORKLOAD=/tmp/fybrik-workload-job
+export FYBRIK_DIR=/tmp/fybrik
+export AIRBYTE_DIR=/tmp/airbyte-module
+```
 
 ## Read and Write Workload Sample
 

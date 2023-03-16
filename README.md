@@ -102,5 +102,5 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 1. Create a namespace called `fybrik-workload`. Our workload creates and deletes FybrikApplications, so we need to grant workloads running in `fybrik-workload` proper permission:
    ```bash
    kubectl create ns fybrik-workload
-   kubectl apply -f rbac.yaml
+   kubectl apply -f $FYBRIK_WORKLOAD/rbac.yaml
    ```

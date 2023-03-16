@@ -8,7 +8,7 @@ git clone https://github.com/fybrik/airbyte-module /tmp/airbyte-module
 
 export FYBRIK_WORKLOAD=/tmp/fybrik-workload-job
 export FYBRIK_DIR=/tmp/fybrik
-export AIRBYTE_DIR=/tmp/airbyte-module
+export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 ```
 
 ## Read and Write Workload Sample
@@ -35,10 +35,11 @@ export AIRBYTE_DIR=/tmp/airbyte-module
    stringData:
      access_key: "${ACCESS_KEY}"
      secret_key: "${SECRET_KEY}"
-   EOF   
+   EOF
    ```
    Next, register the data asset itself in the data catalog. We use port-forwarding to send asset creation requests to the Katalog connector.
    ```bash
+   cat << EOF | kubectl apply -f -
    apiVersion: katalog.fybrik.io/v1alpha1
    kind: Asset
    metadata:

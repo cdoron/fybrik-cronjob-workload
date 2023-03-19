@@ -24,7 +24,7 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 
 1. Upload the CSV file to an object storage of your choice such as AWS S3, IBM Cloud Object Storage or Ceph. Make a note of the service endpoint, bucket name, and access credentials. You will need them later.
 
-    ??? tip "Setup and upload to localstack"
+    :bulb: **Tip:** Setup and upload to localstack
 
     For experimentation you can install localstack to your cluster instead of using a cloud service.
 

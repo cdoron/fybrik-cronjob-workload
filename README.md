@@ -17,9 +17,9 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 
 1. At this point, we have an asset for writing, as well as a `FybrikModule` for writing MySQL datasets.
 
-1. Next, let us create an asset for reading, and deploy a `FybrikModule` for reading. If the `arrow-flight-module` is not yet deployed, deploy it now:
+1. Next, we wish to create an asset for reading. First, let us deploy a `FybrikModule` for reading:
    ```bash
-   kubectl apply -f https://github.com/fybrik/arrow-flight-module/releases/download/v0.11.0/module.yaml -n fybrik-system   
+   kubectl apply -f $FYBRIK_WORKLOAD/arrow-flight-module.yaml -n fybrik-system
    ```
 
 1. Follow the instructions in [Notebook sample for the read flow](https://fybrik.io/v1.3/samples/notebook-read/) to deploy an S3 service. Replace `fybrik-notebook-sample` with `fybrik-airbyte-sample`.

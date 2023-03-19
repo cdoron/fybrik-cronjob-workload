@@ -34,12 +34,14 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
        export SECRET_KEY="mysecretkey"
        ```
     1. Install localstack to the currently active namespace and wait for it to be ready:
-       helm repo add localstack-charts https://localstack.github.io/helm-charts
-       helm install localstack localstack-charts/localstack \
-              --set startServices="s3" \
-              --set service.type=ClusterIP \
-              --set livenessProbe.initialDelaySeconds=25
-       kubectl wait --for=condition=ready --all pod -n fybrik-airbyte-sample --timeout=120s
+      ```bash
+      helm repo add localstack-charts https://localstack.github.io/helm-charts
+      helm install localstack localstack-charts/localstack \
+             --set startServices="s3" \
+             --set service.type=ClusterIP \
+             --set livenessProbe.initialDelaySeconds=25
+      kubectl wait --for=condition=ready --all pod -n fybrik-airbyte-sample --timeout=120s
+      ```
     1. Create a port-forward to communicate with localstack server:
       ```bash
       kubectl port-forward svc/localstack 4566:4566 &

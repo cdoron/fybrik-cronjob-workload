@@ -129,6 +129,14 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
      column_names := [input.resource.metadata.columns[i].name | input.resource.metadata.columns[i].tags["PII.Sensitive"]]
      count(column_names) > 0
    }
+
+   rule[{"action": {"name":"AddCurrencyAction", "columns": column_names}, "policy": description}] {
+     description := "copy column with toBeCopied = true"
+     input.action.actionType == "read"
+     input.resource.metadata.tags["Purpose.finance"]
+     column_names := [input.resource.metadata.columns[i].name | input.resource.metadata.columns[i].tags["toBeCopied"]]
+     count(column_names) > 0
+   }
    ```
 
 1. Run:
@@ -147,6 +155,7 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
 1. At this point, everything should be in place. We have the assets, `FyrbikModule`-s, governance policy. We are ready to run a workload job. This job creates a `FybrikApplication`, waits for that `FybrikApplication` to be ready, run the workload that reads from one asset and writes to another, and finally deletes the `FybrikApplication`:
    ```bash
    kubectl apply -f $FYBRIK_WORKLOAD/job.yaml
+   kubectl wait --for=condition=complete job fybrik-job -n fybrik-workload --timeout=10m
    ```
 
 1. To verify that the dataset has been written, run:

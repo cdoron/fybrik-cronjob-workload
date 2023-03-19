@@ -22,7 +22,40 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
    kubectl apply -f $FYBRIK_WORKLOAD/arrow-flight-module.yaml -n fybrik-system
    ```
 
-1. Follow the instructions in [Notebook sample for the read flow](https://fybrik.io/v1.3/samples/notebook-read/) to deploy an S3 service. Replace `fybrik-notebook-sample` with `fybrik-airbyte-sample`.
+1. Upload the CSV file to an object storage of your choice such as AWS S3, IBM Cloud Object Storage or Ceph. Make a note of the service endpoint, bucket name, and access credentials. You will need them later.
+
+??? tip "Setup and upload to localstack"
+
+    For experimentation you can install localstack to your cluster instead of using a cloud service.
+
+    1. Define variables for access key and secret key
+      ```bash
+      export ACCESS_KEY="myaccesskey"
+      export SECRET_KEY="mysecretkey"
+      ```
+    1. Install localstack to the currently active namespace and wait for it to be ready:
+       helm repo add localstack-charts https://localstack.github.io/helm-charts
+       helm install localstack localstack-charts/localstack \
+              --set startServices="s3" \
+              --set service.type=ClusterIP \
+              --set livenessProbe.initialDelaySeconds=25
+       kubectl wait --for=condition=ready --all pod -n fybrik-notebook-sample --timeout=120s
+    1. Create a port-forward to communicate with localstack server:
+      ```bash
+      kubectl port-forward svc/localstack 4566:4566 &
+      ```
+    1. Use [AWS CLI](https://aws.amazon.com/cli/) to upload the dataset to a new created bucket in the localstack server:
+      ```bash
+      export ENDPOINT="http://127.0.0.1:4566"
+      export BUCKET="demo"
+      export OBJECT_KEY="PS_20174392719_1491204439457_log.csv"
+      export FILEPATH=$FYBRIK_DIR/samples/notebook/PS_20174392719_1491204439457_log.csv
+      export REGION=theshire
+      aws configure set aws_access_key_id ${ACCESS_KEY} && aws configure set aws_secret_access_key ${SECRET_KEY}
+      aws configure set region ${REGION}
+      aws --endpoint-url=${ENDPOINT} s3api create-bucket --bucket ${BUCKET} --region ${REGION} --create-bucket-configuration LocationConstraint=${REGION}
+      aws --endpoint-url=${ENDPOINT} s3api put-object --bucket ${BUCKET} --key ${OBJECT_KEY} --body ${FILEPATH}
+      ```
 
 1. run:
    ```bash

@@ -39,7 +39,7 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
               --set startServices="s3" \
               --set service.type=ClusterIP \
               --set livenessProbe.initialDelaySeconds=25
-       kubectl wait --for=condition=ready --all pod -n fybrik-notebook-sample --timeout=120s
+       kubectl wait --for=condition=ready --all pod -n fybrik-airbyte-sample --timeout=120s
     1. Create a port-forward to communicate with localstack server:
       ```bash
       kubectl port-forward svc/localstack 4566:4566 &

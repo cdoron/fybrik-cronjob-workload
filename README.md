@@ -109,3 +109,17 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
    ```bash
    kubectl apply -f $FYBRIK_WORKLOAD/job.yaml
    ```
+
+1. To verify that the dataset has been written, run:
+   ```bash
+   kubectl delete pod mysql-client --ignore-not-found=true
+   kubectl run mysql-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mysql:8.0.32-debian-11-r0 --namespace fybrik-airbyte-sample --env MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD --command -- bash
+mysql -h mysql.fybrik-airbyte-sample.svc.cluster.local -uroot -p"$MYSQL_ROOT_PASSWORD"
+   ```
+
+1. In a mysql client shell prompt insert the following commands to show the newly created dataset:
+   ```bash
+   use test;
+   show tables;
+   select * from demo;
+   ```

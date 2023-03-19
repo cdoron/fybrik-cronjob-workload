@@ -40,6 +40,7 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
              --set startServices="s3" \
              --set service.type=ClusterIP \
              --set livenessProbe.initialDelaySeconds=25
+      kubectl delete pod mysql-client --ignore-not-found=true
       kubectl wait --for=condition=ready --all pod -n fybrik-airbyte-sample --timeout=120s
       ```
     1. Create a port-forward to communicate with localstack server:
@@ -105,6 +106,9 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
          - name: newbalanceOrig
            tags:
              PII.Sensitive: true
+         - name: amount
+           tags:
+             toBeCopied: true
    EOF
    CATALOGED_ASSET="fybrik-airbyte-sample/paysim-csv"
    ```

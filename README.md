@@ -29,10 +29,10 @@ export AIRBYTE_MODULE_DIR=/tmp/airbyte-module
     For experimentation you can install localstack to your cluster instead of using a cloud service.
 
     1. Define variables for access key and secret key
-      ```bash
-      export ACCESS_KEY="myaccesskey"
-      export SECRET_KEY="mysecretkey"
-      ```
+       ```bash
+       export ACCESS_KEY="myaccesskey"
+       export SECRET_KEY="mysecretkey"
+       ```
     1. Install localstack to the currently active namespace and wait for it to be ready:
        helm repo add localstack-charts https://localstack.github.io/helm-charts
        helm install localstack localstack-charts/localstack \
